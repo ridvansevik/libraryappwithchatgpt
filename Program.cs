@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libraryappwithchatgpt
 {
-  
+
     class Program
     {
         static void Main(string[] args)
@@ -16,6 +16,7 @@ namespace libraryappwithchatgpt
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Lütfen yapmak istediğiniz işlemi seçin:");
                 Console.WriteLine("1. Kitap Ekle");
                 Console.WriteLine("2. Kitap Sil");
@@ -23,8 +24,8 @@ namespace libraryappwithchatgpt
                 Console.WriteLine("4. Kitap Ödünç Al");
                 Console.WriteLine("5. Kitap İade Et");
                 Console.WriteLine("6. Programdan Çık");
-
                 Console.WriteLine("7. Listele");
+                Console.WriteLine("8. Ödünç alınmış kitapları Listele");
 
                 int choice = int.Parse(Console.ReadLine());
 
@@ -91,6 +92,7 @@ namespace libraryappwithchatgpt
                         if (searchResults.Count == 0)
                         {
                             Console.WriteLine("Aradığınız kelimeye uygun bir kitap bulunamadı.");
+                            Console.ReadKey();
                         }
                         else
                         {
@@ -99,12 +101,13 @@ namespace libraryappwithchatgpt
                             {
                                 Console.WriteLine("{0} - {1} ({2})", result.Title, result.Author, result.Publisher);
                             }
+                            Console.ReadKey(true);
                         }
                         break;
+
                     case 4:
                         Console.WriteLine("Ödünç almak istediğiniz kitabın adını girin:");
                         string titleToBorrow = Console.ReadLine();
-
                         List<Book> booksToBorrow = library.SearchBooks(titleToBorrow);
 
                         if (booksToBorrow.Count == 0)
@@ -144,26 +147,49 @@ namespace libraryappwithchatgpt
                                 Console.WriteLine("Ödünç alma işlemi iptal edildi.");
                             }
                         }
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear(); // <-- console.clear eklendi
                         break;
-
                     case 5:
                         Console.WriteLine("Programdan çıkılıyor...");
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear(); // <-- console.clear eklendi
                         return;
 
                     case 6:
                         library.SaveLibrary();
                         Console.WriteLine("Programdan çıkılıyor.");
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear(); // <-- console.clear eklendi
                         return;
 
                     case 7:
+                     
                         library.ListBooks();
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+
+
+                    case 8:
+                        library.ListBorrowedBooks();
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear(); // <-- console.clear eklendi
                         break;
 
                     default:
                         Console.WriteLine("Geçersiz seçim. Lütfen tekrar deneyin.");
+                        Console.WriteLine("Devam etmek için bir tuşa basın.");
+                        Console.ReadKey();
+                        Console.Clear(); // <-- console.clear eklendi
                         break;
-                }
 
+                }
             }
         }
     }

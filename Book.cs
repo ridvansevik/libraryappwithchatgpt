@@ -23,7 +23,7 @@ namespace libraryappwithchatgpt
         }
     }
 
-    class BorrowedBook
+    public class BorrowedBook
     {
         public Book Book { get; set; }
         public string BorrowerName { get; set; }

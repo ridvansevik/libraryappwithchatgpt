@@ -54,13 +54,6 @@ namespace libraryappwithchatgpt
             }
         }
 
-
-        public List<Book> GetAvailableBooks()
-        {
-            // Return a list of all available books
-            return books.Where(b => b.IsAvailable).ToList();
-        }
-
         public List<Book> SearchBooks(string searchTerm)
         {
             // Return a list of all books that match the search term
@@ -91,29 +84,50 @@ namespace libraryappwithchatgpt
             save();
         }
 
-        public void ReturnBook(Book book)
-        {
-            foreach (BorrowedBook borrowedBook in borrowedBooks)
-            {
-                if (borrowedBook.Book == book)
-                {
-                    borrowedBook.Book.IsAvailable = true;
-                    borrowedBooks.Remove(borrowedBook);
-                    Console.WriteLine("Kitap başarıyla iade edildi.");
-                    break;
-                }
-            }
-        }
         public void ListBooks()
-        {
-            Console.WriteLine("Tüm Kitaplar:");
+    {
             foreach (var book in books)
             {
-                Console.WriteLine($"{book.Title} - {book.Author}");
+                string borrowedMark = "";
+                if (!book.IsAvailable)
+                {
+                    borrowedMark = " (Ödünç Alındı)";
+                }
+                Console.WriteLine($"{book.Title} - {book.Author}{borrowedMark}");
             }
             Console.ReadKey();
         }
 
+        public void ListBorrowedBooks()
+        {
+            Console.WriteLine("Ödünç Alınmış Kitaplar:");
+            foreach (var borrowedBook in borrowedBooks)
+            {
+                Console.WriteLine($"{borrowedBook.Book.Title} - {borrowedBook.Book.Author} - {borrowedBook.BorrowerName} - {borrowedBook.BorrowDate}");
+            }
+            Console.ReadKey();
+        }
+
+
+        public void ReturnBook(Book book)
+        {
+            // Find the borrowed book that matches the given book
+            var borrowedBook = borrowedBooks.FirstOrDefault(bb => bb.Book == book);
+
+            if (borrowedBook == null)
+            {
+                Console.WriteLine("Bu kitap ödünç alınmamış.");
+                return;
+            }
+
+            // Mark the book as available
+            book.IsAvailable = true;
+
+            // Remove the borrowed book from the borrowedBooks list
+            borrowedBooks.Remove(borrowedBook);
+
+            Console.WriteLine("Kitap başarıyla iade edildi.");
+        }
 
 
 
